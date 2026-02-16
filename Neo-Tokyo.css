@@ -1230,8 +1230,18 @@ a.emby-button.homeLibraryButton.raised:hover::before {
 
 /* == Detail Image Sizing and Positioning (Desktop) == */
 .layout-desktop .detailImageContainer .card { /* The main poster/image on the details page */
+    position: absolute !important;
     top: 9em !important;      /* Vertical positioning from the top */
+    left: 3.3% !important;    /* Align to the left padding of content */
     width: 18.3vw !important; /* Width relative to viewport width */
+    z-index: 2 !important;
+}
+
+/* Prevent episode images from overlapping the main poster */
+.layout-desktop .detailSection .itemsContainer {
+    margin-top: 10vw !important;
+    position: relative;
+    z-index: 1;
 }
 
 /* == Detail Page Content Repositioning (Desktop) == */
