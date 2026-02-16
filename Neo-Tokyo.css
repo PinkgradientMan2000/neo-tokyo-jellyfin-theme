@@ -465,11 +465,9 @@ progress::-webkit-progress-value  /* Filled part of the progress bar (WebKit) */
         0 0 50px rgba(0, 245, 255, 0.4),
         inset 0 0 30px rgba(0, 245, 255, 0.05) !important;
 }
-
 /* Override original: .dialog { background-color: var(--secondary-background-color) !important; /* Re-affirm background, could be inherited */
-    border-radius: var(--rounded-cards) !important;
-    border: 1px solid var(--alt-accent-color);
-}
+    /* border-radius: var(--rounded-cards) !important;
+    border: 1px solid var(--alt-accent-color); */
 /* Margin for titles within action sheets (a type of dialog). */
 .actionSheetTitle {
     margin: 10px 20px !important;
@@ -3125,7 +3123,10 @@ input[type="search"],
     border: 2px solid var(--neon-pink) !important;
     border-radius: 5px !important;
     box-shadow: 0 0 10px rgba(255, 0, 255, 0.3) !important;
+    appearance: none !important;
     -webkit-appearance: none !important; /* Kill browser-specific styling */
+    border-radius: var(--rounded-cards) !important;
+    border: 1px solid var(--alt-accent-color);
 }
 
 /* 2. KILL THE PURPLE (Placeholder State) */
