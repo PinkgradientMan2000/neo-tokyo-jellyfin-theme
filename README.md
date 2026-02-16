@@ -39,6 +39,7 @@ Search Area
 There are currently a couple issues with the desktop site which I'm aware of but cannot get it looking correct which I will show below. If there is anyone that would like to contribute in making this work a bit better for the desktop side, please let me know.
 
 Known issue #1 (Screen after selecting a title) [Only on PC web side]
+
   -Title in cyan runs off the screen instead of wrapping correctly
   -Color of certain areas seem to be a purple color
   -Poster of the media seems to overlap over other areas
@@ -46,5 +47,6 @@ Known issue #1 (Screen after selecting a title) [Only on PC web side]
 
 
 Known issue #2 (same as one small issue in #1)
+
   -Selection areas seem to be a purple color
 <img width="2492" height="1222" alt="Issues 2" src="https://github.com/user-attachments/assets/32f63d74-f983-46db-81ca-674f4cc32867" />
