@@ -89,23 +89,26 @@ h1, h2, h3 {
 
 
 
-/* Main body background with cyberpunk gradients */
-/* body {
+/* Main background with cyberpunk gradients for main containers only */
+.backgroundContainer,
+.nowPlayingPlaylist,
+.nowPlayingContextMenu,
+.backdropContainer {
         background: var(--darker-bg) !important;
         background-image: 
                 radial-gradient(circle at 20% 50%, rgba(177, 0, 255, 0.1) 0%, transparent 50%),
                 radial-gradient(circle at 80% 80%, rgba(255, 0, 110, 0.1) 0%, transparent 50%),
                 radial-gradient(circle at 40% 20%, rgba(0, 245, 255, 0.1) 0%, transparent 50%);
 }
-*/
 
-/* hide scrollbars */
-/*
-* {
-    scrollbar-color : transparent transparent !important;
+/* Hide scrollbars only in main containers for safety */
+.backgroundContainer *,
+.nowPlayingPlaylist *,
+.nowPlayingContextMenu *,
+.backdropContainer * {
+    scrollbar-color: transparent transparent !important;
     scrollbar-width: none !important;
 }
-*/
 
 .emby-button.block, .dashboardDocument .material-icons.check:before, .displayPreferencesPage .material-icons.check:before {
     color: var(--text-color) !important;
