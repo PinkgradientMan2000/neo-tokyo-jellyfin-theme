@@ -90,19 +90,22 @@ h1, h2, h3 {
 
 
 /* Main body background with cyberpunk gradients */
-body {
-    background: var(--darker-bg) !important;
-    background-image: 
-        radial-gradient(circle at 20% 50%, rgba(177, 0, 255, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(255, 0, 110, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 40% 20%, rgba(0, 245, 255, 0.1) 0%, transparent 50%);
+/* body {
+        background: var(--darker-bg) !important;
+        background-image: 
+                radial-gradient(circle at 20% 50%, rgba(177, 0, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 0, 110, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(0, 245, 255, 0.1) 0%, transparent 50%);
 }
+*/
 
 /* hide scrollbars */
+/*
 * {
-  scrollbar-color : transparent transparent !important;
-  scrollbar-width: none !important;
+    scrollbar-color : transparent transparent !important;
+    scrollbar-width: none !important;
 }
+*/
 
 .emby-button.block, .dashboardDocument .material-icons.check:before, .displayPreferencesPage .material-icons.check:before {
     color: var(--text-color) !important;
@@ -3195,4 +3198,20 @@ input:-webkit-autofill:focus {
     font-style: italic !important;
     text-transform: uppercase !important;
     text-shadow: 2px 2px var(--neon-pink), -1px -1px var(--neon-cyan) !important;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~ JELLYFIN WINDOWS PLAYER VIDEO VISIBILITY FIX (DESKTOP ONLY) ~~~~~~~~~~~~~~~~~~~~ */
+@media (min-width: 900px) {
+    /* Last-resort: completely reset all styles on the video element in player containers */
+    .videoPlayerContainer video,
+    .playerContainer video,
+    .video-js video,
+    .video-player video,
+    .video-container video {
+        all: unset !important;
+        display: block !important;
+        width: 100% !important;
+        height: 100% !important;
+        background: #000 !important;
+    }
 }
