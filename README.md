@@ -1,5 +1,18 @@
-Thie is a curent work in progress build for a nice little Neo-Tokyo type look for users on their Jellyfin server. Currently this is on build 10.11.6 and looks almost perfect (besides some color issues) on mobile. However there are a couple of glitches that are being worked on for the desktop site. Anyone that would like to use this can us it and even build upon it. This was made possible by using AI to assist (since I don't know much about coding CSS) so there are bound to be things that can be tightened up within the code the code to make it a bit better. As for now I'm unsure if importing the github URL will work to add the theme to your Jellyfin server, so I have been using the raw code itself.
+This is a current work-in-progress build for a Neo-Tokyo inspired look for Jellyfin users. Currently, this is build 10.11.6 and looks almost perfect (aside from some color issues) on mobile. However, there are a couple of glitches being worked on for the desktop site. Anyone who would like to use this can do so and even build upon it. This theme was made possible with AI assistance (since I don't know much about coding CSS), so there are bound to be things that can be improved within the code. For now, I'm unsure if importing the GitHub URL will work to add the theme to your Jellyfin server, so I have been using the raw code itself.
 
+## How to Set the Theme in Jellyfin
+
+To use this theme in Jellyfin, follow these steps:
+
+1. Go to **Dashboard** > **Branding** in your Jellyfin server settings.
+2. Scroll down to the **Custom CSS** section.
+3. Paste the following code:
+
+```css
+@import url('https://cdn.jsdelivr.net/gh/PinkgradientMan2000/neo-tokyo-jellyfin-theme@main/Neo-Tokyo.css');
+```
+
+4. Save your changes. The Neo-Tokyo theme should now be applied.
 
 
 Down below will have images of how this theme currently looks.
