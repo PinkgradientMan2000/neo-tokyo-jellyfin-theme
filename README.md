@@ -41,7 +41,9 @@ There are currently a couple issues with the desktop site which I'm aware of but
 Known issue #1 (Screen after selecting a title) [Only on PC web side]
 
   -Title in cyan runs off the screen instead of wrapping correctly
+  
   -Color of certain areas seem to be a purple color
+  
   -Poster of the media seems to overlap over other areas
 <img width="2492" height="1232" alt="Issues 1" src="https://github.com/user-attachments/assets/05c3e588-ed6b-45d0-87aa-d658495e0725" />
 
