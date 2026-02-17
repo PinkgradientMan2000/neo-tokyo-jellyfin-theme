@@ -467,9 +467,8 @@ progress::-webkit-progress-value  /* Filled part of the progress bar (WebKit) */
 }
 
 /* Override original: .dialog { background-color: var(--secondary-background-color) !important; /* Re-affirm background, could be inherited */
-    border-radius: var(--rounded-cards) !important;
-    border: 1px solid var(--alt-accent-color);
-}
+    /* border-radius: var(--rounded-cards) !important;
+    border: 1px solid var(--alt-accent-color); */
 /* Margin for titles within action sheets (a type of dialog). */
 .actionSheetTitle {
     margin: 10px 20px !important;
@@ -1230,18 +1229,57 @@ a.emby-button.homeLibraryButton.raised:hover::before {
 /* ~~~~~~~~~~~~~~~~~~~~ DETAILS PAGE (Restored Original Layout Focus) ~~~~~~~~~~~~~~~~~~~~ */
 /* Styles aimed at restoring or customizing the layout of the item details page. */
 
+/* == Detail Page Backdrop (Desktop) == */
+/* The full-screen .backdropImage (inside .backdropContainer) now covers the
+   entire viewport. The #itemBackdrop banner paints a SECOND copy of the same
+   image which creates a visible seam where it ends. Making it transparent lets
+   the full-screen backdrop show through seamlessly from top to bottom. */
+.layout-desktop .itemBackdrop {
+    background-image: none !important;
+    background-color: transparent !important;
+}
+
 /* == Detail Image Sizing and Positioning (Desktop) == */
+
+/* ElegantFin-inspired: Ensure title h1 is visible and not cut off */
+.nameContainer h1 {
+    z-index: 2;
+    display: var(--itemTitleVisibility, block);
+}
+.detailLogo.hide ~ .detailPageWrapperContainer .nameContainer h1 {
+    display: block !important;
+}
+.detailImageContainer:has(.backdropCard, .squareCard) ~ .nameContainer h1,
+.detailImageContainer:has(.cardImageIcon.person) ~ .nameContainer h1 {
+    display: block !important;
+}
 .layout-desktop .detailImageContainer .card { /* The main poster/image on the details page */
+    position: absolute !important;
     top: 9em !important;      /* Vertical positioning from the top */
+    left: 3.3% !important;    /* Align to the left padding of content */
     width: 18.3vw !important; /* Width relative to viewport width */
+    z-index: 2 !important;
+}
+
+/* Prevent episode images from overlapping the main poster */
+.layout-desktop .detailSection .itemsContainer {
+    margin-top: 10vw !important;
+    position: relative;
+    z-index: 1;
 }
 
 /* == Detail Page Content Repositioning (Desktop) == */
-.layout-desktop .detailSection { /* Sections like Cast, Seasons, etc. */
-    margin-right: 0 !important; /* Remove any default right margin */
+.layout-desktop .detailSection {
+    margin-right: 0 !important;
+    margin-top: 0 !important;
+    padding: 0;
 }
-.layout-desktop .detailPageContent { /* Main content container for details */
-    padding-left: 3.3% !important; /* Original/desired left padding */
+
+.layout-desktop .detailPageContent {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+    padding-left: 3.3%;
 }
 
 /* == Detail Page Logo Positioning and Styling == */
@@ -1250,21 +1288,29 @@ a.emby-button.homeLibraryButton.raised:hover::before {
 .layout-tv .detailLogo {
     right: 0 !important;     /* Align to right edge (or reset if previously centered) */
     left: 4% !important;     /* Position from left */
-    top: 10% !important;     /* Position from top */
+    top: 20% !important;     /* Pushed down to clear the header bar */
     position: absolute !important; /* Absolute positioning for precise placement */
     width: auto !important;  /* Allow natural width based on height or max-width */
     max-width: 30%;          /* Maximum width relative to parent */
-    max-height: 30%;         /* Maximum height relative to parent - adjust for logo size */
-    height: 800px !important;/* Fixed height, likely overridden by max-height. Review if this is intended or if max-height is sufficient. */
-    z-index: 3;              /* Ensure logo is above backdrop but potentially below some OSD elements */
+    max-height: 25%;         /* Maximum height relative to parent */
+    height: 800px !important;/* Fixed height, overridden by max-height */
+    z-index: 2;              /* Below header (z-index: 999) but above backdrop */
     object-fit: contain !important; /* Ensure logo scales properly without overflow */
     animation: slideInLogo 0.8s ease-out; /* Apply slide-in animation */
 }
 
 /* == Transparent Detail Ribbon == */
 /* Makes the ribbon bar (often containing item title/info) transparent. */
+/* Also overrides the fixed 7.2em height so the ribbon grows to fit the title content, preventing overlap with detailPagePrimaryContent. */
 .detailRibbon {
     background: transparent !important;
+}
+.layout-desktop .detailRibbon {
+    height: auto !important;
+    min-height: 7.2em;
+    margin-top: -12em !important; /* Pull ribbon up over backdrop more to compensate for auto height */
+    padding-left: 0 !important; /* Reset default 32.45vw — theme uses infoWrapper margin-left instead */
+    overflow: visible !important;
 }
 
 /* == Tagline Spacing == */
@@ -1336,8 +1382,10 @@ h3.tagline {
 .layout-desktop .detailSectionContent {
     background: var(--secondary-background-transparent) !important;
     border-radius: var(--rounded-cards) !important;
-    padding: 40px 20px 0px 20px !important;
-    margin-top: 40px !important;
+    padding: 2.5rem 1.25rem 3rem 1.25rem !important;
+    margin-top: 0 !important;
+    position: relative !important;
+    overflow: hidden; /* Contain absolutely positioned children */
 }
 .layout-mobile .detailSectionContent {
     background: var(--secondary-background-transparent) !important;
@@ -1360,6 +1408,8 @@ h3.tagline {
     padding: 0 10px;
     margin-left: 10px !important;
     border: none !important;
+    background: transparent !important;        /* Override purple alt-accent-color */
+    color: var(--text-color) !important;       /* Match default text color */
     max-width: 70em !important; /* Ensures dropdowns fit within the track selection area */
     width: 70em !important; /* Matches the width of the track selection area */
 }
@@ -1382,33 +1432,92 @@ h3.tagline {
     text-overflow: initial;
 }
 
+/* Pink text on hover for audio/subtitle track selects */
+.trackSelections .selectContainer .detailTrackSelect:hover {
+    color: var(--neon-pink) !important;
+}
+
+/* Track select dropdown options — white text on dark bg.
+   Browser controls the hover highlight natively (usually blue),
+   which pairs well with white text. */
+.trackSelections .selectContainer .detailTrackSelect option {
+    background-color: #0a0a0f !important;
+    color: #e0e0ff !important;
+}
+.trackSelections .selectContainer .detailTrackSelect option:checked {
+    background-color: #1a1a2e !important;
+    color: #87ceeb !important;
+}
+
 /* == Title Positioning (Desktop) == */
 /* Repositions the main title and related info on the details page. */
 .layout-desktop .infoWrapper { /* Container for title, year, ratings etc. */
+    position: relative !important; /* Keep in document flow so content below adjusts to title height */
     margin-top: 245px !important;
     margin-left: 20.8vw !important; /* Offset from left, relative to viewport width */
+    max-width: calc(100% - 22vw) !important; /* Constrain width so titles wrap within available space */
 }
 .layout-desktop .detailPagePrimaryContainer { /* Primary container for the top section of details page */
     padding-left: 3.3% !important; /* Re-affirm padding */
 }
 .layout-desktop .nameContainer { /* Container for the item name/title */
-    position: absolute !important;
-    margin-top: -3em !important; /* Use em units for consistent zoom behavior */
+    /* Removed absolute positioning and negative margin to allow natural wrapping */
     display: flex;
     flex-direction: column; /* Stack title elements vertically */
     align-items: flex-start;
+    flex-wrap: wrap;
+    flex-basis: auto;
+    min-width: 0;
+    max-width: 100% !important; /* Stay within infoWrapper bounds */
+    margin-bottom: 1em;
+    white-space: normal !important;
+    overflow: visible !important;
+    word-break: break-word !important;
+    position: relative !important; /* Required for z-index to take effect */
+    z-index: 3;
+}
+
+.layout-desktop .nameContainer h1,
+.layout-desktop .nameContainer .parentName,
+.layout-desktop .nameContainer .itemName {
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+    max-width: 100% !important; /* Respect parent container width */
+    display: block;
+    text-overflow: unset !important;
+    overflow: visible !important;
+}
+
+/* Prevent h3.itemName from overlapping detailsContent on desktop */
+.layout-desktop h3.itemName {
+    margin-bottom: 0 !important;
+    padding-bottom: 2.5em !important;
+    display: block;
+    width: 100%;
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
 }
 .layout-desktop .itemMiscInfo { /* Miscellaneous info like year, runtime, rating */
+    position: static !important;
+    margin: 0 !important;
+}
+
+
+.layout-desktop .detailSectionContent .itemMiscInfo.itemMiscInfo-primary {
     position: absolute !important;
-    margin-left: 0.75em !important; /* Use em for consistent zoom behavior */
-    margin-top: 1em !important; /* Use em for consistent zoom behavior */
+    right: 2rem !important;
+    bottom: 1.5rem !important;
+    margin: 0 !important;
 }
 
 /* == Description Box Positioning (Desktop) == */
 /* Moves the primary content (description, etc.) to align with the repositioned title. */
 .layout-desktop .detailPagePrimaryContent {
     padding-left: 20.4vw !important; /* Offset from left */
-	padding-bottom: 1em;
+    padding-bottom: 1em;
+    margin-top: 1em !important; /* Reduced — infoWrapper is now in flow, so spacing is natural */
 }
 
 /* == Minimum Height for Primary Content Based on Poster Aspect Ratio (Desktop) == */
@@ -1462,13 +1571,7 @@ h3.tagline {
     padding: 10px 40px 0px 0px !important;
 }
 
-.layout-desktop .nameContainer {
-    display: flex;
-    justify-content: flex-start;
-    flex-wrap: nowrap;
-    flex-direction: row;
-    align-items: baseline;
-}
+/* nameContainer flex is already defined in the Title Positioning section above */
 
 .nameContainer:has(.itemName.subtitle) .parentName {
     display: block !important;
@@ -2542,27 +2645,8 @@ button.emby-tab-button.guide-date-tab-button.emby-button:focus {
 }
 
 /* ~~~~~ NEO-TOKYO GRID OVERLAY ~~~~~ */
-body::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 200vw;
-    height: 200vh;
-    background-image: 
-        linear-gradient(rgba(0, 245, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 245, 255, 0.03) 1px, transparent 1px);
-    background-size: 40px 40px; /* Size of grid squares */
-    transform: perspective(500px) rotateX(60deg) translateY(-100px) translateZ(-200px);
-    animation: cyber-grid-move 20s linear infinite;
-    z-index: -10; /* Behind everything */
-    pointer-events: none;
-}
-
-@keyframes cyber-grid-move {
-    0% { transform: perspective(500px) rotateX(60deg) translateY(0) translateZ(-200px); }
-    100% { transform: perspective(500px) rotateX(60deg) translateY(40px) translateZ(-200px); }
-}
+/* NOTE: The body::before grid is defined once in the NEO-TOKYO INJECTION section below.
+   Only one ::before pseudo-element can exist per element, so we keep the final definition. */
 
 /* ~~~~~ MISSING ANIMATION DEFINITIONS ~~~~~ */
 
@@ -2920,19 +3004,40 @@ div.card-hoverable:hover .cardImageContainer::after {
    HOME SCREEN - CYBERNETIC HEX-GRID (CLEAN VERSION)
    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-.backdropContainer, .backgroundContainer {
+/* Hex-grid only when NO backdrop artwork is active.
+   .backgroundContainer is position:fixed and covers the full screen —
+   if it stays opaque when backdrops are active, it hides the artwork
+   in .backdropContainer which sits behind it in the DOM.
+   NEVER apply background-image to .backdropContainer — its children
+   (.backdropImage divs) carry the artwork via inline styles. */
+.backgroundContainer:not(.withBackdrop) {
     background-color: #000 !important;
-    background-image: 
+    background-image:
         /* The Hex-Dots */
         radial-gradient(circle at 2px 2px, rgba(0, 245, 255, 0.05) 1px, transparent 0),
         /* The Grid Lines */
         linear-gradient(rgba(0, 245, 255, 0.02) 1px, transparent 1px),
         linear-gradient(90deg, rgba(0, 245, 255, 0.02) 1px, transparent 1px),
-        /* THE FIX: Move the vignette INSIDE the background layer */
+        /* Vignette */
         radial-gradient(circle, transparent 20%, rgba(0, 0, 0, 0.9) 100%) !important;
-    
+
     background-size: 40px 40px, 40px 40px, 40px 40px, 100% 100% !important;
-    background-attachment: fixed !important;
+    background-attachment: scroll !important; /* 'fixed' causes rendering issues in Firefox */
+}
+
+/* When backdrop artwork IS showing, make .backgroundContainer transparent
+   so the .backdropImage elements in .backdropContainer are visible. */
+.backgroundContainer.withBackdrop {
+    background-color: transparent !important;
+    background-image: none !important;
+}
+
+/* Jellyfin sets .backdropContainer to z-index:-1, which places it BEHIND the
+   opaque body background — making the artwork invisible. Raising it to z-index:0
+   puts it ABOVE body but still behind .backgroundContainer and page content
+   (both come later in DOM order and paint on top). */
+.backdropContainer {
+    z-index: 0 !important;
 }
 
 /* Ensure no accidental overlays are sitting on top of the UI */
@@ -3125,7 +3230,10 @@ input[type="search"],
     border: 2px solid var(--neon-pink) !important;
     border-radius: 5px !important;
     box-shadow: 0 0 10px rgba(255, 0, 255, 0.3) !important;
+    appearance: none !important;
     -webkit-appearance: none !important; /* Kill browser-specific styling */
+    border-radius: var(--rounded-cards) !important;
+    border: 1px solid var(--alt-accent-color);
 }
 
 /* 2. KILL THE PURPLE (Placeholder State) */
