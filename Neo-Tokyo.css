@@ -2616,27 +2616,8 @@ button.emby-tab-button.guide-date-tab-button.emby-button:focus {
 }
 
 /* ~~~~~ NEO-TOKYO GRID OVERLAY ~~~~~ */
-body::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 200vw;
-    height: 200vh;
-    background-image: 
-        linear-gradient(rgba(0, 245, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 245, 255, 0.03) 1px, transparent 1px);
-    background-size: 40px 40px; /* Size of grid squares */
-    transform: perspective(500px) rotateX(60deg) translateY(-100px) translateZ(-200px);
-    animation: cyber-grid-move 20s linear infinite;
-    z-index: -10; /* Behind everything */
-    pointer-events: none;
-}
-
-@keyframes cyber-grid-move {
-    0% { transform: perspective(500px) rotateX(60deg) translateY(0) translateZ(-200px); }
-    100% { transform: perspective(500px) rotateX(60deg) translateY(40px) translateZ(-200px); }
-}
+/* NOTE: The body::before grid is defined once in the NEO-TOKYO INJECTION section below.
+   Only one ::before pseudo-element can exist per element, so we keep the final definition. */
 
 /* ~~~~~ MISSING ANIMATION DEFINITIONS ~~~~~ */
 
@@ -2994,19 +2975,32 @@ div.card-hoverable:hover .cardImageContainer::after {
    HOME SCREEN - CYBERNETIC HEX-GRID (CLEAN VERSION)
    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-.backdropContainer, .backgroundContainer {
+/* Hex-grid only when NO backdrop artwork is active.
+   .backgroundContainer is position:fixed and covers the full screen —
+   if it stays opaque when backdrops are active, it hides the artwork
+   in .backdropContainer which sits behind it in the DOM.
+   NEVER apply background-image to .backdropContainer — its children
+   (.backdropImage divs) carry the artwork via inline styles. */
+.backgroundContainer:not(.withBackdrop) {
     background-color: #000 !important;
-    background-image: 
+    background-image:
         /* The Hex-Dots */
         radial-gradient(circle at 2px 2px, rgba(0, 245, 255, 0.05) 1px, transparent 0),
         /* The Grid Lines */
         linear-gradient(rgba(0, 245, 255, 0.02) 1px, transparent 1px),
         linear-gradient(90deg, rgba(0, 245, 255, 0.02) 1px, transparent 1px),
-        /* THE FIX: Move the vignette INSIDE the background layer */
+        /* Vignette */
         radial-gradient(circle, transparent 20%, rgba(0, 0, 0, 0.9) 100%) !important;
-    
+
     background-size: 40px 40px, 40px 40px, 40px 40px, 100% 100% !important;
-    background-attachment: fixed !important;
+    background-attachment: scroll !important; /* 'fixed' causes rendering issues in Firefox */
+}
+
+/* When backdrop artwork IS showing, make .backgroundContainer transparent
+   so the .backdropImage elements in .backdropContainer are visible. */
+.backgroundContainer.withBackdrop {
+    background-color: transparent !important;
+    background-image: none !important;
 }
 
 /* Ensure no accidental overlays are sitting on top of the UI */
