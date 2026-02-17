@@ -1229,6 +1229,16 @@ a.emby-button.homeLibraryButton.raised:hover::before {
 /* ~~~~~~~~~~~~~~~~~~~~ DETAILS PAGE (Restored Original Layout Focus) ~~~~~~~~~~~~~~~~~~~~ */
 /* Styles aimed at restoring or customizing the layout of the item details page. */
 
+/* == Detail Page Backdrop (Desktop) == */
+/* The full-screen .backdropImage (inside .backdropContainer) now covers the
+   entire viewport. The #itemBackdrop banner paints a SECOND copy of the same
+   image which creates a visible seam where it ends. Making it transparent lets
+   the full-screen backdrop show through seamlessly from top to bottom. */
+.layout-desktop .itemBackdrop {
+    background-image: none !important;
+    background-color: transparent !important;
+}
+
 /* == Detail Image Sizing and Positioning (Desktop) == */
 
 /* ElegantFin-inspired: Ensure title h1 is visible and not cut off */
@@ -1398,6 +1408,8 @@ h3.tagline {
     padding: 0 10px;
     margin-left: 10px !important;
     border: none !important;
+    background: transparent !important;        /* Override purple alt-accent-color */
+    color: var(--text-color) !important;       /* Match default text color */
     max-width: 70em !important; /* Ensures dropdowns fit within the track selection area */
     width: 70em !important; /* Matches the width of the track selection area */
 }
@@ -3001,6 +3013,14 @@ div.card-hoverable:hover .cardImageContainer::after {
 .backgroundContainer.withBackdrop {
     background-color: transparent !important;
     background-image: none !important;
+}
+
+/* Jellyfin sets .backdropContainer to z-index:-1, which places it BEHIND the
+   opaque body background — making the artwork invisible. Raising it to z-index:0
+   puts it ABOVE body but still behind .backgroundContainer and page content
+   (both come later in DOM order and paint on top). */
+.backdropContainer {
+    z-index: 0 !important;
 }
 
 /* Ensure no accidental overlays are sitting on top of the UI */
