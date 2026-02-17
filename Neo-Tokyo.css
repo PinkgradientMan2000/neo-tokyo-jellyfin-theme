@@ -1432,6 +1432,23 @@ h3.tagline {
     text-overflow: initial;
 }
 
+/* Pink text on hover for audio/subtitle track selects */
+.trackSelections .selectContainer .detailTrackSelect:hover {
+    color: var(--neon-pink) !important;
+}
+
+/* Track select dropdown options — white text on dark bg.
+   Browser controls the hover highlight natively (usually blue),
+   which pairs well with white text. */
+.trackSelections .selectContainer .detailTrackSelect option {
+    background-color: #0a0a0f !important;
+    color: #e0e0ff !important;
+}
+.trackSelections .selectContainer .detailTrackSelect option:checked {
+    background-color: #1a1a2e !important;
+    color: #87ceeb !important;
+}
+
 /* == Title Positioning (Desktop) == */
 /* Repositions the main title and related info on the details page. */
 .layout-desktop .infoWrapper { /* Container for title, year, ratings etc. */
